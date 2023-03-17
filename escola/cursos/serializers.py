@@ -24,7 +24,7 @@ class AvaliacaoSerializer(serializers.ModelSerializer):
             'id',
             'curso',
             'nome',
-            'emal',
+            'email',
             'comentario',
             'avaliacao',
             'criacao',
