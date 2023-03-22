@@ -1,18 +1,6 @@
 from rest_framework import serializers
 from . models import Curso, Avaliacao
 
-class CursoSerializer(serializers.ModelSerializer):
-
-    class Meta:    
-        model = Curso
-        fields = (
-            'id',
-            'titulo',
-            'url',
-            'criacao',
-            'ativo'
-        )
-
 class AvaliacaoSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -29,4 +17,19 @@ class AvaliacaoSerializer(serializers.ModelSerializer):
             'avaliacao',
             'criacao',
             'ativo'
+        )
+
+class CursoSerializer(serializers.ModelSerializer):
+
+    avaliacoes = AvaliacaoSerializer(many=True, read_only=True)
+
+    class Meta:    
+        model = Curso
+        fields = (
+            'id',
+            'titulo',
+            'url',
+            'criacao',
+            'ativo',
+            'avaliacoes'
         )
