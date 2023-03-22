@@ -18,10 +18,13 @@ class AvaliacaoSerializer(serializers.ModelSerializer):
             'criacao',
             'ativo'
         )
+        read_only_fields = (
+            'curso',
+        )
 
 class CursoSerializer(serializers.ModelSerializer):
 
-    avaliacoes = AvaliacaoSerializer(many=True, read_only=True)
+    avaliacoes = AvaliacaoSerializer(many=True)
 
     class Meta:    
         model = Curso
@@ -31,5 +34,14 @@ class CursoSerializer(serializers.ModelSerializer):
             'url',
             'criacao',
             'ativo',
-            'avaliacoes'
+            'avaliacoes',
         )
+
+    def create(self, validated_data):
+        
+        avaliacoes_data = validated_data.pop('avaliacoes')
+        curso = Curso.objects.create(**validated_data)
+
+        for avaliacao_data in avaliacoes_data:
+            Avaliacao.objects.create(curso=curso, **avaliacao_data)
+        return curso
